@@ -83,7 +83,7 @@ app.post('/url', function(req, res) {
 
 // Retrieve long URL
 app.get('/:url', function (req, res) {
-	let baseURL = "https://nk-url-shortener.herokuapp.com:38870/"
+	let baseURL = "https://nk-url-shortener.herokuapp.com/"
 	let shortURL = baseURL + req.params.url;
 
 	dbConn.query(`SELECT * FROM ${database}.url WHERE short_url=?;`, shortURL, function (err, data) {
