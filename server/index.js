@@ -7,7 +7,7 @@ app.use(bodyParser.json()) // parse application/json
 
 // CORS start
 const cors = require("cors");
-const whitelist = ["http://localhost:3000"];
+const whitelist = ["http://localhost:3000","http://nk-url-shortener.s3-website-us-east-1.amazonaws.com"];
 const corsOptions = {
 	origin: function (origin, callback) {
 		if (!origin || whitelist.indexOf(origin) !== -1) {
