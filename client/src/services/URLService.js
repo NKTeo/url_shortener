@@ -1,5 +1,5 @@
 const axios = require('axios');
-const baseURL = "http://localhost:3001"
+const baseURL = "https://nk-url-shortener.herokuapp.com:38870"
 
 async function checkShortURLPresent(short_url){
     let result = await axios.post(`${baseURL}/check`, {
