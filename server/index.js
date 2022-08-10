@@ -102,6 +102,14 @@ app.post('/check', function (req, res) {
 	});
 })
 
+const path = require('path')
+
+// Serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, '../client/build')))
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname + '/../client/build/index.html'))
+})
+
 const PORT = process.env.PORT || 3001
 app.listen(PORT)
 console.log(`Server running on port ${PORT}`)
