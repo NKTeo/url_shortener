@@ -21,22 +21,35 @@ const corsOptions = {
 app.use(cors(corsOptions));
 // CORS end
 
-// Connection to DB
+// Connection to DB - utilize secrets injection
 const mysql = require('mysql');
 const dbConn = mysql.createConnection({
-	host: 'localhost',
-	user: 'root',
-	password: '',
-	database: 'url_shortener'
+	host: process.env.hostname,
+	user: process.env.user,
+	password: process.env.password,
+	database: process.env.database
 });
 
-dbConn.connect(function(err){
-	if(err){
-		console.log('Database connection error');
-	}else{
-		console.log('Database connection successful');
-	}
-});
+function handleDisconnect() {
+	dbConn.connect(function(err){
+		if(err){
+			console.log('Database connection error');
+			setTimeout(handleDisconnect(), 2000);
+		}else{
+			console.log('Database connection successful');
+		}
+	});
+
+	dbConn.on("error", function(err) {
+		console.log("db error", err);
+		if (err.code === "PROTOCOL_CONNECTION_LOST") {
+			handleDisconnect();
+		} else {
+			throw err;
+		}
+	});
+}
+handleDisconnect(dbConn);
 
 // API Routes
 
@@ -56,7 +69,7 @@ app.post('/url', function(req, res) {
 		short_url: short_url
 	};
 
-	dbConn.query('INSERT INTO url_shortener.url SET ?', url_record, function (err, res) {
+	dbConn.query(`INSERT INTO ${database}.url SET ?`, url_record, function (err, res) {
 		if(err) throw err;
 	});
 })
@@ -66,10 +79,10 @@ app.get('/:url', function (req, res) {
 	let baseURL = "http://localhost:3001/"
 	let shortURL = baseURL + req.params.url;
 
-	dbConn.query('SELECT * FROM url_shortener.url WHERE short_url=?;', shortURL, function (err, data) {
+	dbConn.query(`SELECT * FROM ${database}.url WHERE short_url=?;`, shortURL, function (err, data) {
 		if(err) throw err;
 		if(data.length == 0){
-			res.send("<h1>URL not present</h1>")
+			res.send("<h1>Invalid URL</h1>")
 		} else{
 			res.redirect(data[0]['long_url'])
 		}
@@ -79,7 +92,7 @@ app.get('/:url', function (req, res) {
 // Check presence of short URL generated
 app.post('/check', function (req, res) {
 	let short_url = req.body.short_url;
-	dbConn.query('SELECT * FROM url_shortener.url WHERE short_url=?;', short_url, function (err, data) {
+	dbConn.query(`SELECT * FROM ${database}.url WHERE short_url=?;`, short_url, function (err, data) {
 		if(err) throw err;
 		if(data == []){
 			res.send("URL not present")

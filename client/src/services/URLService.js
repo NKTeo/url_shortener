@@ -36,7 +36,7 @@ export async function getShortURL(long_url){
 }
 
 export async function getLongURL(short_url){
-    // Call backend API to store generated short URL and long URL in database
+    // Call backend API to retrieve long URL from database
     let req = {
         "short_url": short_url,
     }
