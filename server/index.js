@@ -31,10 +31,17 @@ const dbConn = mysql.createConnection({
 });
 
 function handleDisconnect() {
+	const dbConn = mysql.createConnection({
+		host: process.env.hostname,
+		user: process.env.user,
+		password: process.env.password,
+		database: process.env.database
+	});
+
 	dbConn.connect(function(err){
 		if(err){
 			console.log('Database connection error');
-			setTimeout(handleDisconnect(), 2000);
+			setTimeout(handleDisconnect, 2000);
 		}else{
 			console.log('Database connection successful');
 		}
@@ -49,7 +56,7 @@ function handleDisconnect() {
 		}
 	});
 }
-handleDisconnect(dbConn);
+handleDisconnect();
 
 // API Routes
 
