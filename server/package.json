@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm install && npm run dev",
-    "preinstall":"npm I -g pm2",
+    "preinstall":"npm install pm2 -g",
     "dev": "npx pm2 start index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
