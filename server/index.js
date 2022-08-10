@@ -23,7 +23,7 @@ app.use(cors(corsOptions));
 
 // Connection to DB - utilize secrets injection
 const mysql = require('mysql');
-const dbConn = mysql.createConnection({
+let dbConn = mysql.createConnection({
 	host: process.env.hostname,
 	user: process.env.user,
 	password: process.env.password,
@@ -31,7 +31,7 @@ const dbConn = mysql.createConnection({
 });
 
 function handleDisconnect() {
-	const dbConn = mysql.createConnection({
+	let dbConn = mysql.createConnection({
 		host: process.env.hostname,
 		user: process.env.user,
 		password: process.env.password,
