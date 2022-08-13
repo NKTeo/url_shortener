@@ -23,6 +23,7 @@ app.use(cors(corsOptions));
 
 // Connection to DB - utilize secrets injection
 const mysql = require('mysql');
+let database = process.env.database;
 let dbConn = mysql.createPool({
 	host: process.env.hostname,
 	user: process.env.user,
