@@ -38,14 +38,14 @@ function handleDisconnect() {
 		database: process.env.database
 	});
 
-	dbConn.connect(function(err){
-		if(err){
-			console.log('Database connection error', err);
-			setTimeout(handleDisconnect, 2000);
-		}else{
-			console.log('Database connection successful');
-		}
-	});
+	// dbConn.connect(function(err){
+	// 	if(err){
+	// 		console.log('Database connection error', err);
+	// 		setTimeout(handleDisconnect, 2000);
+	// 	}else{
+	// 		console.log('Database connection successful');
+	// 	}
+	// });
 
 	dbConn.on("error", function(err) {
 		console.log("db error", err);
