@@ -54,9 +54,7 @@ handleDisconnect();
 
 // Test Health
 app.get('/', function (req, res) {
-	return res.json({
-		"URL shortener made by": "Nian Kai"
-	})
+	res.redirect("http://nk-url-shortener.s3-website-us-east-1.amazonaws.com");
 })
 
 // Add shortened URL
