@@ -8,7 +8,7 @@ The application has been deployed on the respective platforms:
 - Server - Heroku
 - Database - ClearDB on Heroku
 
-To access it: http://nk-url-shortener.s3-website-us-east-1.amazonaws.com/
+To access it: https://nk-url-shortener.herokuapp.com/
 
 ## To run locally
 1. Clone the repository
@@ -28,7 +28,8 @@ To access it: http://nk-url-shortener.s3-website-us-east-1.amazonaws.com/
 		password: "",
 		database: "url_shortener"
 	});
-- line 80: replace "https://nk-url-shortener.herokuapp.com/" with "http://localhost:3001/"
+- line 57: replace "http://nk-url-shortener.s3-website-us-east-1.amazonaws.com" with "http://localhost:3000"
+- line 78: replace "https://nk-url-shortener.herokuapp.com/" with "http://localhost:3001/"
 
 # Database
 - Create a MySQL database named "url_shortener". Within it, create a table named "url".
@@ -37,10 +38,10 @@ To access it: http://nk-url-shortener.s3-website-us-east-1.amazonaws.com/
 ```
 
 4. Run **"npm start"** on client directory and **"npm run dev"** on server directory
-5. Access http://localhost:3000 to see the main page
+5. Access http://localhost:3001 to see the main page
 
 
-The generated URLs will have a base URL of http://localhost:3000
+The generated URLs will have a base URL of http://localhost:3001
 
 
 ## To run unit tests
