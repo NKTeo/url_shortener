@@ -39,15 +39,6 @@ function handleDisconnect() {
 		database: process.env.database
 	});
 
-	// dbConn.connect(function(err){
-	// 	if(err){
-	// 		console.log('Database connection error', err);
-	// 		setTimeout(handleDisconnect, 2000);
-	// 	}else{
-	// 		console.log('Database connection successful');
-	// 	}
-	// });
-
 	dbConn.on("error", function(err) {
 		console.log("db error", err);
 		if (err.code === "PROTOCOL_CONNECTION_LOST") {
@@ -80,6 +71,8 @@ app.post('/url', function(req, res) {
 	dbConn.query(`INSERT INTO ${database}.url SET ?`, url_record, function (err, res) {
 		if(err) throw err;
 	});
+
+	return short_url;
 })
 
 // Retrieve long URL
@@ -113,3 +106,5 @@ app.post('/check', function (req, res) {
 const PORT = process.env.PORT || 3001
 app.listen(PORT)
 console.log(`Server running on port ${PORT}`)
+
+module.exports = app;
