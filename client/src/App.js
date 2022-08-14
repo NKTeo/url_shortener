@@ -30,10 +30,10 @@ function App() {
 
 					<div style={{marginTop: "30px", padding: "25px", border: "10px solid green"}}>
 						<h4 className="mb-4">
-							Long URL: <span style={{fontWeight: "normal"}}>{originalURL}</span>
+							Long URL: <span className="w-100" style={{fontWeight: "normal", overflowWrap: "break-word"}}>{originalURL}</span>
 						</h4>
 						<h4>
-							Shortened URL: <a href={shortURL} target="_blank">{shortURL}</a>
+							Shortened URL: <a href={shortURL} style={{overflowWrap: "break-word"}} target="_blank">{shortURL}</a>
 						</h4>
 					</div>
 
