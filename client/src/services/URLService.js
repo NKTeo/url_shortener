@@ -1,5 +1,5 @@
 const axios = require('axios');
-const baseURL = "https://nk-url-shortener.herokuapp.com"
+const baseURL = "http://localhost:3001"
 
 async function checkShortURLPresent(short_url){
     let result = await axios.post(`${baseURL}/check`, {
@@ -15,14 +15,14 @@ export async function getShortURL(long_url){
     for (let i = 0; i < 5; i++){
         appended_string += charset.charAt(Math.floor(Math.random() * charset.length))
     }
-    let full_url = 'https://' + long_url.replace(/^https?:\/\//, '')
+    let full_url = 'http://' + long_url.replace(/^https?:\/\//, '')
 
     // Check if the shortened URL is present. If present, generate another URL
     while (checkShortURLPresent(full_url) === "URL present"){
         for (let i = 0; i < 5; i++){
             appended_string += charset.charAt(Math.floor(Math.random() * charset.length))
         }
-        full_url = 'https://' + long_url.replace(/^https?:\/\//, '')
+        full_url = 'http://' + long_url.replace(/^https?:\/\//, '')
     }
     let short_url = baseURL + '/' + appended_string
 
