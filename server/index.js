@@ -23,20 +23,20 @@ app.use(cors(corsOptions));
 
 // Connection to DB - utilize secrets injection
 const mysql = require('mysql');
-let database = process.env.database;
+let database = "url_shortener";
 let dbConn = mysql.createPool({
-	host: process.env.hostname,
-	user: process.env.user,
-	password: process.env.password,
-	database: process.env.database
+	host: "localhost",
+	user: "root",
+	password: "",
+	database: "url_shortener"
 });
 
 function handleDisconnect() {
 	let dbConn = mysql.createPool({
-		host: process.env.hostname,
-		user: process.env.user,
-		password: process.env.password,
-		database: process.env.database
+		host: "localhost",
+		user: "root",
+		password: "",
+		database: "url_shortener"
 	});
 
 	dbConn.on("error", function(err) {
@@ -54,7 +54,7 @@ handleDisconnect();
 
 // Test Health
 app.get('/', function (req, res) {
-	res.redirect("http://nk-url-shortener.s3-website-us-east-1.amazonaws.com");
+	res.redirect("http://localhost:3000");
 })
 
 // Add shortened URL
@@ -75,7 +75,7 @@ app.post('/url', function(req, res) {
 
 // Retrieve long URL
 app.get('/:url', function (req, res) {
-	let baseURL = "https://nk-url-shortener.herokuapp.com/"
+	let baseURL = "http://localhost:3001/"
 	let shortURL = baseURL + req.params.url;
 
 	dbConn.query(`SELECT * FROM ${database}.url WHERE short_url=?;`, shortURL, function (err, data) {
@@ -83,7 +83,26 @@ app.get('/:url', function (req, res) {
 		if(data.length == 0){
 			res.send("<h1>Invalid URL</h1>")
 		} else{
-			res.redirect(data[0]['long_url'])
+			let count;
+
+			// Get the count 
+			dbConn.query(`SELECT count FROM ${database}.url WHERE short_url=?;`, shortURL, function (err, dataCount){
+				count = dataCount[0]["count"];
+				console.log("test", count);
+				
+				// If count = 3, delete the row. Else update the count by 1
+				if (count == 2){
+					dbConn.query(`DELETE FROM ${database}.url WHERE short_url=?;`, shortURL, function (err, data){
+					});
+				} else {
+					let new_count = count + 1
+					console.log(new_count);
+					dbConn.query(`UPDATE ${database}.url SET count = ${new_count} WHERE short_url=?;`, shortURL, function (err, data){
+					})
+				}
+				console.log("long_url", data[0]['long_url'])
+				res.redirect(data[0]['long_url'])
+			})
 		}
 	});
 })
